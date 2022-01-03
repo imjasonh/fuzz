@@ -4,6 +4,11 @@ on:
   schedule:
   - cron: '17 * * * *' # Every hour at X:17
 
+  push:
+    branches: ['main']
+  
+  workflow_dispatch:
+
 jobs:
   fuzz:
     name: Fuzz
