@@ -1,0 +1,20 @@
+name: Fuzz
+
+on:
+  schedule:
+  - cron: '17 * * * *' # Every hour at X:17
+
+jobs:
+  fuzz:
+    name: Fuzz
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-go@v2
+      with:
+        go-version: 1.17.x
+    - run: |
+        go install golang.org/dl/go1.18beta1@latest
+        go1.18beta1 download
+
+    - run: go1.18beta1 test -fuzz=Fuzz -fuzztime=30m
