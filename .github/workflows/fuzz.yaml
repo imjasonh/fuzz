@@ -9,6 +9,11 @@ on:
   
   workflow_dispatch:
 
+# Cancel any in-progress runs for the same PR or SHA.
+concurrency:
+  group: fuzz-${{ github.head_ref || github.sha }}
+  cancel-in-progress: true
+
 jobs:
   fuzz:
     name: Fuzz
