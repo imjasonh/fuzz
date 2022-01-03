@@ -33,6 +33,12 @@ jobs:
     - run: |
         go install golang.org/dl/go1.18beta1@latest
         go1.18beta1 download
+    - uses: actions/cache@v2
+      with:
+        path: ~/go/pkg/mod
+        key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+        restore-keys: |
+          ${{ runner.os }}-go-
 
     - run: go1.18beta1 test -fuzz=Fuzz -fuzztime=30m
 
