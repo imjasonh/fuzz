@@ -12,7 +12,7 @@ func FuzzDockerfileParse(f *testing.F) {
 
 	f.Fuzz(func(t *testing.T, content []byte) {
 		if _, err := parser.Parse(bytes.NewReader(content)); err != nil {
-			t.Logf("%s: %v", string(content), err)
+			t.Skipf("%s: %v", string(content), err)
 		}
 	})
 }
