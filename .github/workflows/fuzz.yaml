@@ -25,6 +25,12 @@ jobs:
   fuzz:
     name: Fuzz
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        target:
+        - TestDockerfileParse
+        - TestK8sLabelsParse
     steps:
     - uses: actions/checkout@v2
     - uses: actions/cache@v2
@@ -42,7 +48,7 @@ jobs:
         go install golang.org/dl/go1.18beta1@latest
         go1.18beta1 download
 
-    - run: go1.18beta1 test -fuzz=Fuzz -fuzztime=30m
+    - run: go1.18beta1 test -fuzz=${{ matrix.target }} -fuzztime=30m
 
     # If any new testdata was generated, open a PR.
     - uses: peter-evans/create-pull-request@v3

@@ -5,14 +5,21 @@ import (
 	"testing"
 
 	"github.com/moby/buildkit/frontend/dockerfile/parser"
+	"k8s.io/apimachinery/pkg/labels"
 )
 
 func FuzzDockerfileParse(f *testing.F) {
 	f.Add([]byte(`FROM ubuntu`))
 
 	f.Fuzz(func(t *testing.T, content []byte) {
-		if _, err := parser.Parse(bytes.NewReader(content)); err != nil {
-			t.Skipf("%s: %v", string(content), err)
-		}
+		_, _ = parser.Parse(bytes.NewReader(content))
+	})
+}
+
+func FuzzK8sLabelsParse(f *testing.F) {
+	f.Add([]byte(`environment in (production, qa)`))
+
+	f.Fuzz(func(t *testing.T, content []byte) {
+		_, _ = labels.Parse(string(content))
 	})
 }
